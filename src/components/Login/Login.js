@@ -46,7 +46,7 @@ const Login = () => {
         <img style={{ height: '60px' }} src="https://i.ibb.co/60VGHLd/Group-1329.png" alt="Volunteer network" />
       </div>
 
-      <div class="w-50 mx-auto p-5 text-center mt-5">
+      <div class="w-50 shadow bg-white rounded mx-auto p-5 text-center mt-5">
       <div className="text-center pt-5">
       <h1 class="mb-5">Login With</h1>
         <br />

@@ -5,50 +5,51 @@ import { UserContext } from '../../App';
 
 
 
-const RegistrationForm = ({task}) => {
+const RegistrationForm = ({props}) => {
 const {state1, state2 } = useContext(UserContext);
 const [loggedInUser, setLoggedInUser]= state1;
 const [event, setEvent]= state2;
 const [eventId, setEventId] = useState({});
 const {id} = useParams();
 console.log(event);
+
+
 useEffect( () => {
-    fetch('http://localhost:5000/alltasks')
+    fetch('https://polar-reef-13173.herokuapp.com/alltasks')
     .then(res => res.json())
     .then(data => {
-        const e = data.find(items=> items._id==id)
+        const e = data.find(items=> items._id === id)
         setEventId(e)
     })
-}, [])
+}, [id]);
+
 const [selectedDate, setSelectedDate] = useState({
     register: new Date()
 });
 
 const handleRegisterDate = (date) => {
-    const newDate = {...selectedDate}
+    const newDate = { ...selectedDate}
     setSelectedDate(newDate);
 };
-const history = useHistory()
-const handleSubmit = () => {
-    history.push('/volunteerTasks')
-}
 
-    
+ const history = useHistory()
 
-const submitHandler = () => {
-    const tasks = {...loggedInUser, ...selectedDate }
+const submitHandler = (e) => {
+    e.preventDefault();
+    const tasks = {...loggedInUser,...selectedDate }
     const name = document.getElementById("name").value;
     const email = document.getElementById("email").value;
-    const info = { name, email}
-    console.log(info)
-    fetch('http://localhost:5000/addTasks', {
+    const info = {name, email, tasks, eventId}
+
+    fetch('https://polar-reef-13173.herokuapp.com/addVolunteerDetail', {
         method: "POST",
         headers: {'Content-type': 'application/json'},
-        body: JSON.stringify(tasks)
+        body: JSON.stringify(info)
     })
     .then(res => res.json())
     .then(data => {
-        //console.log(data);
+        console.log(data);
+        history.push('/volunteerTasks')
     })
 }
 
@@ -59,16 +60,16 @@ const submitHandler = () => {
             </div>
             <div className="d-flex mt-5 justify-content-center align-items-center">
                 <div className="col-md-6">
-                    <form className="mr-5" method="post">
-                        <h3>Register as a Volunteer</h3>
+                    <form onSubmit={submitHandler} className="text-center pt-3 pb-2 w-70 shadow bg-white rounded mx-auto mr-5" method="post">
+                        <h3 className="">Register as a Volunteer</h3>
                         <br />
-                        <input type="text" defaultValue={loggedInUser.name} name="name" placeholder="Name" />
-                        <br />
-                        <br />
-                        <input type="email" defaultValue={loggedInUser.email} name="email" placeholder="Email" />
+                        <input id="name" type="text" defaultValue={loggedInUser.name} name="name" placeholder="Name" />
                         <br />
                         <br />
-                        <input type="date" onChange={handleRegisterDate} format="dd/MM/YYYY" name="date" placeholder="date" />
+                        <input id="email" type="email" defaultValue={loggedInUser.email} name="email" placeholder="Email" />
+                        <br />
+                        <br />
+                        <input type="date" onChange={handleRegisterDate} defaultValue="" format="dd/MM/YYYY" name="date" placeholder="date" />
                         <br />
                         <br />
                         <textarea type="text" rows="3" cols="40" name="comment" form="usrForm" placeholder="Description" />
@@ -77,7 +78,7 @@ const submitHandler = () => {
                         <input type="text" defaultValue={eventId.name} name="name" placeholder="Course Name" />
                         <br />
                         <br/>
-                        <Button onClick={submitHandler} defaultValue={handleSubmit} type="submit" className="px-4 mx-4">
+                        <Button  defaultValue="" type="submit" className="px-4 mx-4">
                             Submit
                        </Button>
                     </form>

@@ -11,6 +11,7 @@ import NotFound from './components/NotFound/NotFound';
 import RegistrationForm from './components/RegistrationForm/RegistrationForm';
 import VolunteerTasks from './components/VolunteerTasks/VolunteerTasks';
 import PrivateRoute from './components/PrivateRoute/PrivateRoute';
+import VolunteerDetails from './components/VolunteerTasks/VolunteerDetails/VolunteerDetails';
 
 
 export const UserContext = createContext();
@@ -21,9 +22,9 @@ function App() {
   console.log(event);
   return (
     <UserContext.Provider value={{
-      state1:[loggedInUser, setLoggedInUser],
-       state2: [event, setEvent]
-       }}>
+      state1: [loggedInUser, setLoggedInUser],
+      state2: [event, setEvent]
+    }}>
 
       <Router><Switch>
         <Route exact path="/">
@@ -33,18 +34,21 @@ function App() {
           <Login></Login>
         </Route>
         <PrivateRoute exact path="/registration/:id">
-          <RegistrationForm></RegistrationForm>          
+          <RegistrationForm></RegistrationForm>
         </PrivateRoute>
         <Route exact path="/VolunteerTasks">
           <VolunteerTasks></VolunteerTasks>
+        </Route>
+        <Route exact path="/VolunteerDetails">
+          <VolunteerDetails></VolunteerDetails>
         </Route>
         <Route path="*">
           <NotFound />
         </Route>
       </Switch>
       </Router>
-      </UserContext.Provider>
-    );
+    </UserContext.Provider>
+  );
 }
 
 export default App;

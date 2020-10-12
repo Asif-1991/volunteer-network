@@ -7,15 +7,13 @@ import { UserContext } from '../../App';
 
 
 const Home = () => {
-    //const [vTasks, setVTasks] = useState([]);
     const {state1, state2 } = useContext(UserContext);
     const [event, setEvent] = state2;
     useEffect( () => {
-        fetch('http://localhost:5000/alltasks')
+        fetch('https://polar-reef-13173.herokuapp.com/alltasks')
         .then(res => res.json())
         .then(data => setEvent(data))
     }, [])
-    //  console.log(state2);
     
     // const handleAddVolunteer = () => {
     //     fetch('http://localhost:5000/addTasks' , {
@@ -50,7 +48,7 @@ const Home = () => {
             <div  className="row container mx-auto mt-5">
 
                 {
-                    event.map(task => <VolunteerPage task={task} key={task._id}></VolunteerPage>)
+                    event.map(task => <VolunteerPage task={task} key={task.id}></VolunteerPage>)
                 }
             </div>
 
